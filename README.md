@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <body>
-     open new text document
-    This project was built with the help of Copilot.
+  for mor information   open new text document 
+    pay attention  This project was built with the help of Copilot.
   </body>
 </html>
