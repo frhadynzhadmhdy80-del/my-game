@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>گربه دونده پیشرفته</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: Tahoma, sans-serif;
+      background: linear-gradient(to bottom, #aee1f9, #ffffff);
+      text-align: center;
+      overflow: hidden;
+    }
+    #header {
+      background-color: #0288d1;
+      color: white;
+      padding: 15px;
+      font-size: 22px;
+    }
+    #scoreboard {
+      margin: 10px;
+      font-size: 18px;
+    }
+    #game {
+      position: relative;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 600px;
+      height: 200px;
+      background-color: #fff;
+      border-top: 5px solid #795548;
+      overflow: hidden;
+    }
+    #ground {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 40px;
+      background-color: #ffeb3b;
+    }
+    #cat {
+      position: absolute;
+      bottom: 40px;
+      left: 50px;
+      width: 50px;
+      height: 50px;
+      background-image: url('https://i.imgur.com/3WbZQpA.png');
+      background-size: cover;
+    }
+    .obstacle {
+      position: absolute;
+      bottom: 40px;
+      width: 30px;
+      height: 40px;
+      border-radius: 5px;
+    }
+    .cactus {
+      background-color: #388e3c;
+    }
+    .rock {
+      background-color: #6d4c41;
+    }
+    #jumpBtn {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #0288d1;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #footer {
+      margin-top: 20px;
+      font-size: 16px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div id="header">معلومه خیلی بیکاری 😄</div>
+  <div id="scoreboard">امتیاز: <span id="score">0</span> | رکورد: <span id="highscore">0</span></div>
+  <button id="jumpBtn">پرش</button>
+  <div id="game">
+    <div id="cat"></div>
+    <div id="ground"></div>
+  </div>
+  <div id="footer">سازنده: مهدی فرهادی نژاد</div>
+
+  <audio id="jumpSound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
+  <audio id="loseSound" src="https://www.soundjay.com/button/beep-10.wav"></audio>
+
+  <script>
+    const cat = document.getElementById("cat");
+    const game = document.getElementById("game");
+    const scoreDisplay = document.getElementById("score");
+    const highscoreDisplay = document.getElementById("highscore");
+    const jumpBtn = document.getElementById("jumpBtn");
+    const jumpSound = document.getElementById("jumpSound");
+    const loseSound = document.getElementById("loseSound");
+
+    let isJumping = false;
+    let score = 0;
+    let speed = 5;
+    let highscore = localStorage.getItem("highscore") || 0;
+    highscoreDisplay.textContent = highscore;
+
+    function jump() {
+      if (!isJumping) {
+        isJumping = true;
+        jumpSound.play();
+        cat.style.transition = "bottom 0.3s";
+        cat.style.bottom = "120px";
+        setTimeout(() => {
+          cat.style.bottom = "40px";
+          setTimeout(() => isJumping = false, 300);
+        }, 300);
+      }
+    }
+
+    jumpBtn.addEventListener("click", jump);
+    document.addEventListener("keydown", e => {
+      if (e.code === "Space") jump();
+    });
+
+    function createObstacle() {
+      const obstacle = document.createElement("div");
+      obstacle.classList.add("obstacle");
+      obstacle.classList.add(Math.random() > 0.5 ? "cactus" : "rock");
+      obstacle.style.right = "-30px";
+      game.appendChild(obstacle);
+
+      let pos = -30;
+      const move = setInterval(() => {
+        pos += speed;
+        obstacle.style.right = pos + "px";
+
+        const catBottom = parseInt(window.getComputedStyle(cat).bottom);
+        const obstacleRight = parseInt(obstacle.style.right);
+        if (obstacleRight > 520 && obstacleRight < 570 && catBottom < 80) {
+          clearInterval(move);
+          loseSound.play();
+          alert("باختی! معلومه خیلی بیکاری 😅");
+          if (score > highscore) {
+            highscore = score;
+            localStorage.setItem("highscore", highscore);
+            highscoreDisplay.textContent = highscore;
+          }
+          score = 0;
+          scoreDisplay.textContent = score;
+          speed = 5;
+          obstacle.remove();
+        }
+
+        if (obstacleRight > 600) {
+          clearInterval(move);
+          obstacle.remove();
+          score++;
+          scoreDisplay.textContent = score;
+          if (speed < 15) speed += 0.5;
+        }
+      }, 20);
+    }
+
+    setInterval(createObstacle, 2000);
+  </script>
+</body>
+</html>
