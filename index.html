@@ -6,7 +6,7 @@
   <style>
     body {
       margin: 0;
-      font-family: Tahoma;
+      font-family: 'Vazir', Tahoma, sans-serif;
       background: linear-gradient(to bottom, #aee1f9, #ffffff);
       overflow: hidden;
       transition: background 1s;
@@ -15,8 +15,9 @@
       background-color: #0288d1;
       color: white;
       padding: 15px;
-      font-size: 22px;
+      font-size: 24px;
       text-align: center;
+      font-weight: bold;
     }
     #scoreboard {
       text-align: center;
@@ -42,9 +43,10 @@
       margin: 0 auto;
       width: 600px;
       height: 200px;
-      background-color: #fff;
+      background: linear-gradient(to top, #f0f0f0, #ffffff);
       border-top: 5px solid #795548;
       overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
     }
     #ground {
       position: absolute;
@@ -68,23 +70,10 @@
       bottom: 40px;
       width: 30px;
       height: 40px;
+      border-radius: 5px;
     }
-    .cactus { background-color: green; }
-    .rock { background-color: brown; }
-    .enemy {
-      background-image: url('enemy.png');
-      background-size: cover;
-      width: 40px;
-      height: 30px;
-      bottom: 40px;
-    }
-    .bullet {
-      position: absolute;
-      width: 10px;
-      height: 5px;
-      background-color: black;
-      bottom: 60px;
-    }
+    .cactus { background-color: #2e7d32; }
+    .rock { background-color: #5d4037; }
     #creator {
       text-align: center;
       margin-top: 10px;
@@ -142,45 +131,15 @@
       }
     });
 
-    function shootBullet() {
-      const bullet = document.createElement("div");
-      bullet.classList.add("bullet");
-      bullet.style.right = "0px";
-      gameArea.appendChild(bullet);
-
-      let bulletPos = 0;
-      const moveBullet = setInterval(() => {
-        bulletPos += 5;
-        bullet.style.right = bulletPos + "px";
-
-        const catBottom = parseInt(window.getComputedStyle(cat).bottom);
-        if (bulletPos > 500 && bulletPos < 580 && catBottom < 80) {
-          clearInterval(moveBullet);
-          bullet.remove();
-          alert("با تیر دشمن باختی!");
-          resetGame();
-        }
-
-        if (bulletPos > 600) {
-          clearInterval(moveBullet);
-          bullet.remove();
-        }
-      }, 20);
-    }
-
     function createObstacle() {
       const obstacle = document.createElement("div");
       obstacle.classList.add("obstacle");
 
       const type = Math.random();
-      if (type < 0.4) {
+      if (type < 0.5) {
         obstacle.classList.add("cactus");
-      } else if (type < 0.8) {
-        obstacle.classList.add("rock");
       } else {
-        obstacle.classList.add("enemy");
-        obstacle.style.bottom = "40px";
-        setTimeout(() => shootBullet(), 1000);
+        obstacle.classList.add("rock");
       }
 
       obstacle.style.right = "-30px";
