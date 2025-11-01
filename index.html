@@ -112,8 +112,6 @@
   </div>
   <div id="controls">
     <button onclick="startGame()">شروع</button>
-    <button onclick="pauseGame()">توقف</button>
-    <button onclick="resetGame()">ریست</button>
     <button onclick="jump()">پرش</button>
   </div>
   <div id="game">
@@ -128,7 +126,6 @@
     const cat = document.getElementById("cat");
     const scoreDisplay = document.getElementById("score");
     const highscoreDisplay = document.getElementById("highscore");
-    const bgMusic = document.getElementById("bgMusic");
     const gameArea = document.getElementById("game");
 
     let score = 0;
@@ -137,7 +134,6 @@
     let gameInterval;
     let speed = 5;
     let isNight = false;
-    let obstacles = [];
 
     highscoreDisplay.textContent = highscore;
 
@@ -214,7 +210,6 @@
 
       obstacle.style.right = "-30px";
       gameArea.appendChild(obstacle);
-      obstacles.push(obstacle);
 
       let pos = -30;
       const move = setInterval(() => {
@@ -261,11 +256,6 @@
       clearInterval(gameInterval);
       gameInterval = setInterval(createObstacle, 2000);
     }
-
-    function pauseGame() {
-      clearInterval(gameInterval);
-      obstacles.forEach(ob => ob.remove());
-      obstacles = [];
-    }
-
-    function resetGame()
+  </script>
+</body>
+</html>
