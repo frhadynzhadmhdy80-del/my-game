@@ -2,7 +2,7 @@
 <html lang="fa">
 <head>
   <meta charset="UTF-8">
-  <title>گربه دونده نسخه ۳</title>
+  <title>گربه دونده ۳.1</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -10,6 +10,7 @@
       font-family: Tahoma;
       background: linear-gradient(to bottom, #aee1f9, #ffffff);
       overflow: hidden;
+      transition: background 1s;
     }
     #header {
       background-color: #0288d1;
@@ -73,7 +74,21 @@
     }
     .cactus { background-color: #388e3c; }
     .rock { background-color: #6d4c41; }
-
+    .enemy {
+      background-image: url('enemy.png');
+      background-size: cover;
+      width: 40px;
+      height: 30px;
+      bottom: 100px;
+    }
+    .bullet {
+      position: absolute;
+      width: 10px;
+      height: 5px;
+      background-color: black;
+      top: 110px;
+      right: 60px;
+    }
     .cloud {
       position: absolute;
       top: 20px;
@@ -90,7 +105,7 @@
   </style>
 </head>
 <body>
-  <div id="header">گربه دونده نسخه ۳ 😺</div>
+  <div id="header">گربه دونده نسخه ۳.1 😺</div>
   <div id="scoreboard">
     امتیاز: <span id="score">0</span> |
     رکورد: <span id="highscore">0</span>
@@ -107,7 +122,6 @@
     <div id="ground"></div>
   </div>
 
-  <!-- موسیقی ثابت -->
   <audio id="bgMusic" src="background.mp3" autoplay loop></audio>
 
   <script>
@@ -115,12 +129,15 @@
     const scoreDisplay = document.getElementById("score");
     const highscoreDisplay = document.getElementById("highscore");
     const bgMusic = document.getElementById("bgMusic");
+    const gameArea = document.getElementById("game");
 
     let score = 0;
     let highscore = localStorage.getItem("highscore") || 0;
     let isJumping = false;
     let gameInterval;
     let speed = 5;
+    let isNight = false;
+    let obstacles = [];
 
     highscoreDisplay.textContent = highscore;
 
@@ -135,12 +152,69 @@
       }
     }
 
+    document.addEventListener("keydown", function(e) {
+      if (e.code === "Space") {
+        jump();
+      }
+    });
+
+    function shootBullet(enemy) {
+      const bullet = document.createElement("div");
+      bullet.classList.add("bullet");
+      bullet.style.right = parseInt(enemy.style.right) + 40 + "px";
+      gameArea.appendChild(bullet);
+
+      let bulletPos = parseInt(bullet.style.right);
+      const moveBullet = setInterval(() => {
+        bulletPos += 5;
+        bullet.style.right = bulletPos + "px";
+
+        const catBottom = parseInt(window.getComputedStyle(cat).bottom);
+        const bulletRight = bulletPos;
+
+        if (bulletRight > 520 && bulletRight < 570 && catBottom < 80) {
+          clearInterval(moveBullet);
+          bullet.remove();
+          alert("توسط تیر دشمن باختی! 😵");
+
+          if (score > highscore) {
+            highscore = score;
+            localStorage.setItem("highscore", highscore);
+            highscoreDisplay.textContent = highscore;
+          }
+
+          score = 0;
+          scoreDisplay.textContent = score;
+          speed = 5;
+        }
+
+        if (bulletRight > 600) {
+          clearInterval(moveBullet);
+          bullet.remove();
+        }
+      }, 20);
+    }
+
     function createObstacle() {
       const obstacle = document.createElement("div");
       obstacle.classList.add("obstacle");
-      obstacle.classList.add(Math.random() > 0.5 ? "cactus" : "rock");
+
+      const type = Math.random();
+      if (type < 0.4) {
+        obstacle.classList.add("cactus");
+      } else if (type < 0.8) {
+        obstacle.classList.add("rock");
+      } else {
+        obstacle.classList.add("enemy");
+        obstacle.style.bottom = "100px";
+        setTimeout(() => {
+          shootBullet(obstacle);
+        }, 1000);
+      }
+
       obstacle.style.right = "-30px";
-      document.getElementById("game").appendChild(obstacle);
+      gameArea.appendChild(obstacle);
+      obstacles.push(obstacle);
 
       let pos = -30;
       const move = setInterval(() => {
@@ -150,7 +224,7 @@
         const catBottom = parseInt(window.getComputedStyle(cat).bottom);
         const obstacleRight = parseInt(obstacle.style.right);
 
-        if (obstacleRight > 520 && obstacleRight < 570 && catBottom < 80) {
+        if (obstacleRight > 520 && obstacleRight < 570 && catBottom < (obstacle.classList.contains("enemy") ? 120 : 80)) {
           clearInterval(move);
           alert("باختی! 😅");
 
@@ -172,6 +246,13 @@
           score++;
           scoreDisplay.textContent = score;
           if (speed < 15) speed += 0.5;
+
+          if (score % 15 === 0) {
+            document.body.style.background = isNight
+              ? "linear-gradient(to bottom, #aee1f9, #ffffff)"
+              : "linear-gradient(to bottom, #0d1b2a, #1b263b)";
+            isNight = !isNight;
+          }
         }
       }, 20);
     }
@@ -183,14 +264,8 @@
 
     function pauseGame() {
       clearInterval(gameInterval);
+      obstacles.forEach(ob => ob.remove());
+      obstacles = [];
     }
 
-    function resetGame() {
-      pauseGame();
-      score = 0;
-      speed = 5;
-      scoreDisplay.textContent = score;
-    }
-  </script>
-</body>
-</html>
+    function resetGame()
