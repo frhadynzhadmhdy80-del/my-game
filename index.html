@@ -3,14 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>گربه دونده ۳.1</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       margin: 0;
       font-family: Tahoma;
       background: linear-gradient(to bottom, #aee1f9, #ffffff);
       overflow: hidden;
-      transition: background 1s;
     }
     #header {
       background-color: #0288d1;
@@ -41,8 +39,7 @@
     #game {
       position: relative;
       margin: 0 auto;
-      width: 100%;
-      max-width: 600px;
+      width: 600px;
       height: 200px;
       background-color: #fff;
       border-top: 5px solid #795548;
@@ -70,10 +67,9 @@
       bottom: 40px;
       width: 30px;
       height: 40px;
-      border-radius: 5px;
     }
-    .cactus { background-color: #388e3c; }
-    .rock { background-color: #6d4c41; }
+    .cactus { background-color: green; }
+    .rock { background-color: brown; }
     .enemy {
       background-image: url('enemy.png');
       background-size: cover;
@@ -87,20 +83,6 @@
       height: 5px;
       background-color: black;
       top: 110px;
-      right: 60px;
-    }
-    .cloud {
-      position: absolute;
-      top: 20px;
-      width: 80px;
-      height: 40px;
-      background: #fff;
-      border-radius: 40px;
-      animation: moveCloud 30s linear infinite;
-    }
-    @keyframes moveCloud {
-      0% { left: -100px; }
-      100% { left: 100%; }
     }
   </style>
 </head>
@@ -115,11 +97,9 @@
     <button onclick="jump()">پرش</button>
   </div>
   <div id="game">
-    <div class="cloud"></div>
     <div id="cat"></div>
     <div id="ground"></div>
   </div>
-
   <audio id="bgMusic" src="background.mp3" autoplay loop></audio>
 
   <script>
@@ -133,7 +113,6 @@
     let isJumping = false;
     let gameInterval;
     let speed = 5;
-    let isNight = false;
 
     highscoreDisplay.textContent = highscore;
 
@@ -166,25 +145,14 @@
         bullet.style.right = bulletPos + "px";
 
         const catBottom = parseInt(window.getComputedStyle(cat).bottom);
-        const bulletRight = bulletPos;
-
-        if (bulletRight > 520 && bulletRight < 570 && catBottom < 80) {
+        if (bulletPos > 520 && bulletPos < 570 && catBottom < 80) {
           clearInterval(moveBullet);
           bullet.remove();
-          alert("توسط تیر دشمن باختی! 😵");
-
-          if (score > highscore) {
-            highscore = score;
-            localStorage.setItem("highscore", highscore);
-            highscoreDisplay.textContent = highscore;
-          }
-
-          score = 0;
-          scoreDisplay.textContent = score;
-          speed = 5;
+          alert("با تیر دشمن باختی!");
+          resetGame();
         }
 
-        if (bulletRight > 600) {
+        if (bulletPos > 600) {
           clearInterval(moveBullet);
           bullet.remove();
         }
@@ -203,9 +171,7 @@
       } else {
         obstacle.classList.add("enemy");
         obstacle.style.bottom = "100px";
-        setTimeout(() => {
-          shootBullet(obstacle);
-        }, 1000);
+        setTimeout(() => shootBullet(obstacle), 1000);
       }
 
       obstacle.style.right = "-30px";
@@ -217,36 +183,21 @@
         obstacle.style.right = pos + "px";
 
         const catBottom = parseInt(window.getComputedStyle(cat).bottom);
-        const obstacleRight = parseInt(obstacle.style.right);
-
-        if (obstacleRight > 520 && obstacleRight < 570 && catBottom < (obstacle.classList.contains("enemy") ? 120 : 80)) {
+        if (pos > 520 && pos < 570 && catBottom < (obstacle.classList.contains("enemy") ? 120 : 80)) {
           clearInterval(move);
-          alert("باختی! 😅");
-
-          if (score > highscore) {
-            highscore = score;
-            localStorage.setItem("highscore", highscore);
-            highscoreDisplay.textContent = highscore;
-          }
-
-          score = 0;
-          scoreDisplay.textContent = score;
-          speed = 5;
-          obstacle.remove();
+          alert("برخورد با مانع!");
+          resetGame();
         }
 
-        if (obstacleRight > 600) {
+        if (pos > 600) {
           clearInterval(move);
           obstacle.remove();
           score++;
           scoreDisplay.textContent = score;
-          if (speed < 15) speed += 0.5;
-
-          if (score % 15 === 0) {
-            document.body.style.background = isNight
-              ? "linear-gradient(to bottom, #aee1f9, #ffffff)"
-              : "linear-gradient(to bottom, #0d1b2a, #1b263b)";
-            isNight = !isNight;
+          if (score > highscore) {
+            highscore = score;
+            localStorage.setItem("highscore", highscore);
+            highscoreDisplay.textContent = highscore;
           }
         }
       }, 20);
@@ -254,7 +205,16 @@
 
     function startGame() {
       clearInterval(gameInterval);
+      score = 0;
+      scoreDisplay.textContent = score;
       gameInterval = setInterval(createObstacle, 2000);
+    }
+
+    function resetGame() {
+      clearInterval(gameInterval);
+      score = 0;
+      scoreDisplay.textContent = score;
+      speed = 5;
     }
   </script>
 </body>
