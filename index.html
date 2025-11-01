@@ -88,10 +88,8 @@
   </div>
   <div id="footer">سازنده: مهدی فرهادی نژاد</div>
 
-  <!-- صدای پس‌زمینه -->
+  <!-- فقط صدای پس‌زمینه -->
   <audio id="bgMusic" src="background.mp3" autoplay loop></audio>
-  <audio id="jumpSound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
-  <audio id="loseSound" src="https://www.soundjay.com/button/beep-10.wav"></audio>
 
   <script>
     const cat = document.getElementById("cat");
@@ -100,8 +98,6 @@
     const highscoreDisplay = document.getElementById("highscore");
     const jumpBtn = document.getElementById("jumpBtn");
     const startBtn = document.getElementById("startBtn");
-    const jumpSound = document.getElementById("jumpSound");
-    const loseSound = document.getElementById("loseSound");
 
     let isJumping = false;
     let score = 0;
@@ -113,7 +109,6 @@
     function jump() {
       if (!isJumping) {
         isJumping = true;
-        jumpSound.play();
         cat.style.transition = "bottom 0.3s";
         cat.style.bottom = "120px";
         setTimeout(() => {
@@ -140,7 +135,6 @@
 
         if (obstacleRight > 520 && obstacleRight < 570 && catBottom < 80) {
           clearInterval(move);
-          loseSound.play();
           alert("باختی! دوباره تلاش کن 😅");
 
           if (score > highscore) {
