@@ -2,14 +2,13 @@
 <html lang="fa">
 <head>
   <meta charset="UTF-8">
-  <title>گربه دونده نسخه دوم</title>
+  <title>گربه دونده نسخه ۳</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       margin: 0;
-      font-family: Tahoma, sans-serif;
+      font-family: Tahoma;
       background: linear-gradient(to bottom, #aee1f9, #ffffff);
-      text-align: center;
       overflow: hidden;
     }
     #header {
@@ -17,10 +16,26 @@
       color: white;
       padding: 15px;
       font-size: 22px;
+      text-align: center;
     }
     #scoreboard {
+      text-align: center;
       margin: 10px;
       font-size: 18px;
+    }
+    #controls {
+      text-align: center;
+      margin: 10px;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #0288d1;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
     }
     #game {
       position: relative;
@@ -47,6 +62,7 @@
       height: 50px;
       background-image: url('logo.png');
       background-size: cover;
+      transition: bottom 0.3s;
     }
     .obstacle {
       position: absolute;
@@ -57,64 +73,65 @@
     }
     .cactus { background-color: #388e3c; }
     .rock { background-color: #6d4c41; }
-    #jumpBtn, #startBtn {
-      margin: 10px;
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #0288d1;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+
+    .cloud {
+      position: absolute;
+      top: 20px;
+      width: 80px;
+      height: 40px;
+      background: #fff;
+      border-radius: 40px;
+      animation: moveCloud 30s linear infinite;
     }
-    #footer {
-      margin-top: 20px;
-      font-size: 16px;
-      color: #555;
+    @keyframes moveCloud {
+      0% { left: -100px; }
+      100% { left: 100%; }
     }
   </style>
 </head>
 <body>
-  <div id="header">گربه دونده نسخه دوم 😺</div>
+  <div id="header">گربه دونده نسخه ۳ 😺</div>
   <div id="scoreboard">
     امتیاز: <span id="score">0</span> |
     رکورد: <span id="highscore">0</span>
   </div>
-  <button id="startBtn">شروع بازی</button>
-  <button id="jumpBtn" style="display:none;">پرش</button>
+  <div id="controls">
+    <button onclick="startGame()">شروع</button>
+    <button onclick="pauseGame()">توقف</button>
+    <button onclick="resetGame()">ریست</button>
+    <button onclick="jump()">پرش</button>
+  </div>
   <div id="game">
+    <div class="cloud"></div>
     <div id="cat"></div>
     <div id="ground"></div>
   </div>
-  <div id="footer">سازنده: مهدی فرهادی نژاد</div>
 
-  <!-- فقط صدای پس‌زمینه -->
+  <!-- موسیقی ثابت -->
   <audio id="bgMusic" src="background.mp3" autoplay loop></audio>
 
   <script>
     const cat = document.getElementById("cat");
-    const game = document.getElementById("game");
     const scoreDisplay = document.getElementById("score");
     const highscoreDisplay = document.getElementById("highscore");
-    const jumpBtn = document.getElementById("jumpBtn");
-    const startBtn = document.getElementById("startBtn");
+    const bgMusic = document.getElementById("bgMusic");
 
-    let isJumping = false;
     let score = 0;
-    let speed = 5;
-    let gameInterval;
     let highscore = localStorage.getItem("highscore") || 0;
+    let isJumping = false;
+    let gameInterval;
+    let speed = 5;
+
     highscoreDisplay.textContent = highscore;
 
     function jump() {
       if (!isJumping) {
         isJumping = true;
-        cat.style.transition = "bottom 0.3s";
         cat.style.bottom = "120px";
         setTimeout(() => {
           cat.style.bottom = "40px";
-          setTimeout(() => isJumping = false, 300);
-        }, 300);
+          isJumping = false;
+        }, 600);
       }
     }
 
@@ -123,7 +140,7 @@
       obstacle.classList.add("obstacle");
       obstacle.classList.add(Math.random() > 0.5 ? "cactus" : "rock");
       obstacle.style.right = "-30px";
-      game.appendChild(obstacle);
+      document.getElementById("game").appendChild(obstacle);
 
       let pos = -30;
       const move = setInterval(() => {
@@ -135,7 +152,7 @@
 
         if (obstacleRight > 520 && obstacleRight < 570 && catBottom < 80) {
           clearInterval(move);
-          alert("باختی! دوباره تلاش کن 😅");
+          alert("باختی! 😅");
 
           if (score > highscore) {
             highscore = score;
@@ -160,18 +177,20 @@
     }
 
     function startGame() {
-      startBtn.style.display = "none";
-      jumpBtn.style.display = "inline-block";
-      score = 0;
-      scoreDisplay.textContent = score;
+      clearInterval(gameInterval);
       gameInterval = setInterval(createObstacle, 2000);
     }
 
-    jumpBtn.addEventListener("click", jump);
-    startBtn.addEventListener("click", startGame);
-    document.addEventListener("keydown", e => {
-      if (e.code === "Space") jump();
-    });
+    function pauseGame() {
+      clearInterval(gameInterval);
+    }
+
+    function resetGame() {
+      pauseGame();
+      score = 0;
+      speed = 5;
+      scoreDisplay.textContent = score;
+    }
   </script>
 </body>
 </html>
