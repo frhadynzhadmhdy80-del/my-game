@@ -2,7 +2,7 @@
 <html lang="fa">
 <head>
   <meta charset="UTF-8">
-  <title>گربه دونده پیشرفته</title>
+  <title>گربه دونده نسخه دوم</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -45,7 +45,7 @@
       left: 50px;
       width: 50px;
       height: 50px;
-      background-image: url('https://i.imgur.com/3WbZQpA.png');
+      background-image: url('logo.png');
       background-size: cover;
     }
     .obstacle {
@@ -55,13 +55,9 @@
       height: 40px;
       border-radius: 5px;
     }
-    .cactus {
-      background-color: #388e3c;
-    }
-    .rock {
-      background-color: #6d4c41;
-    }
-    #jumpBtn {
+    .cactus { background-color: #388e3c; }
+    .rock { background-color: #6d4c41; }
+    #jumpBtn, #startBtn {
       margin: 10px;
       padding: 10px 20px;
       font-size: 16px;
@@ -79,15 +75,21 @@
   </style>
 </head>
 <body>
-  <div id="header">معلومه خیلی بیکاری 😄</div>
-  <div id="scoreboard">امتیاز: <span id="score">0</span> | رکورد: <span id="highscore">0</span></div>
-  <button id="jumpBtn">پرش</button>
+  <div id="header">گربه دونده نسخه دوم 😺</div>
+  <div id="scoreboard">
+    امتیاز: <span id="score">0</span> |
+    رکورد: <span id="highscore">0</span>
+  </div>
+  <button id="startBtn">شروع بازی</button>
+  <button id="jumpBtn" style="display:none;">پرش</button>
   <div id="game">
     <div id="cat"></div>
     <div id="ground"></div>
   </div>
   <div id="footer">سازنده: مهدی فرهادی نژاد</div>
 
+  <!-- صدای پس‌زمینه -->
+  <audio id="bgMusic" src="background.mp3" autoplay loop></audio>
   <audio id="jumpSound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
   <audio id="loseSound" src="https://www.soundjay.com/button/beep-10.wav"></audio>
 
@@ -97,12 +99,14 @@
     const scoreDisplay = document.getElementById("score");
     const highscoreDisplay = document.getElementById("highscore");
     const jumpBtn = document.getElementById("jumpBtn");
+    const startBtn = document.getElementById("startBtn");
     const jumpSound = document.getElementById("jumpSound");
     const loseSound = document.getElementById("loseSound");
 
     let isJumping = false;
     let score = 0;
     let speed = 5;
+    let gameInterval;
     let highscore = localStorage.getItem("highscore") || 0;
     highscoreDisplay.textContent = highscore;
 
@@ -119,11 +123,6 @@
       }
     }
 
-    jumpBtn.addEventListener("click", jump);
-    document.addEventListener("keydown", e => {
-      if (e.code === "Space") jump();
-    });
-
     function createObstacle() {
       const obstacle = document.createElement("div");
       obstacle.classList.add("obstacle");
@@ -138,15 +137,18 @@
 
         const catBottom = parseInt(window.getComputedStyle(cat).bottom);
         const obstacleRight = parseInt(obstacle.style.right);
+
         if (obstacleRight > 520 && obstacleRight < 570 && catBottom < 80) {
           clearInterval(move);
           loseSound.play();
-          alert("باختی! معلومه خیلی بیکاری 😅");
+          alert("باختی! دوباره تلاش کن 😅");
+
           if (score > highscore) {
             highscore = score;
             localStorage.setItem("highscore", highscore);
             highscoreDisplay.textContent = highscore;
           }
+
           score = 0;
           scoreDisplay.textContent = score;
           speed = 5;
@@ -163,7 +165,19 @@
       }, 20);
     }
 
-    setInterval(createObstacle, 2000);
+    function startGame() {
+      startBtn.style.display = "none";
+      jumpBtn.style.display = "inline-block";
+      score = 0;
+      scoreDisplay.textContent = score;
+      gameInterval = setInterval(createObstacle, 2000);
+    }
+
+    jumpBtn.addEventListener("click", jump);
+    startBtn.addEventListener("click", startGame);
+    document.addEventListener("keydown", e => {
+      if (e.code === "Space") jump();
+    });
   </script>
 </body>
 </html>
