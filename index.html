@@ -9,6 +9,7 @@
       font-family: Tahoma;
       background: linear-gradient(to bottom, #aee1f9, #ffffff);
       overflow: hidden;
+      transition: background 1s;
     }
     #header {
       background-color: #0288d1;
@@ -113,6 +114,7 @@
     let isJumping = false;
     let gameInterval;
     let speed = 5;
+    let isNight = false;
 
     highscoreDisplay.textContent = highscore;
 
@@ -133,13 +135,13 @@
       }
     });
 
-    function shootBullet(enemy) {
+    function shootBullet() {
       const bullet = document.createElement("div");
       bullet.classList.add("bullet");
-      bullet.style.right = parseInt(enemy.style.right) + 40 + "px";
+      bullet.style.right = "0px";
       gameArea.appendChild(bullet);
 
-      let bulletPos = parseInt(bullet.style.right);
+      let bulletPos = 0;
       const moveBullet = setInterval(() => {
         bulletPos += 5;
         bullet.style.right = bulletPos + "px";
@@ -171,7 +173,7 @@
       } else {
         obstacle.classList.add("enemy");
         obstacle.style.bottom = "100px";
-        setTimeout(() => shootBullet(obstacle), 1000);
+        setTimeout(() => shootBullet(), 1000);
       }
 
       obstacle.style.right = "-30px";
@@ -183,7 +185,7 @@
         obstacle.style.right = pos + "px";
 
         const catBottom = parseInt(window.getComputedStyle(cat).bottom);
-        if (pos > 520 && pos < 570 && catBottom < (obstacle.classList.contains("enemy") ? 120 : 80)) {
+        if (pos > 500 && pos < 580 && catBottom < (obstacle.classList.contains("enemy") ? 120 : 80)) {
           clearInterval(move);
           alert("برخورد با مانع!");
           resetGame();
@@ -198,6 +200,13 @@
             highscore = score;
             localStorage.setItem("highscore", highscore);
             highscoreDisplay.textContent = highscore;
+          }
+
+          if (score % 15 === 0) {
+            document.body.style.background = isNight
+              ? "linear-gradient(to bottom, #aee1f9, #ffffff)"
+              : "linear-gradient(to bottom, #0d1b2a, #1b263b)";
+            isNight = !isNight;
           }
         }
       }, 20);
