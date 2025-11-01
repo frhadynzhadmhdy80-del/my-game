@@ -76,14 +76,14 @@
       background-size: cover;
       width: 40px;
       height: 30px;
-      bottom: 100px;
+      bottom: 40px;
     }
     .bullet {
       position: absolute;
       width: 10px;
       height: 5px;
       background-color: black;
-      top: 110px;
+      bottom: 60px;
     }
     #creator {
       text-align: center;
@@ -179,7 +179,7 @@
         obstacle.classList.add("rock");
       } else {
         obstacle.classList.add("enemy");
-        obstacle.style.bottom = "100px";
+        obstacle.style.bottom = "40px";
         setTimeout(() => shootBullet(), 1000);
       }
 
@@ -192,7 +192,7 @@
         obstacle.style.right = pos + "px";
 
         const catBottom = parseInt(window.getComputedStyle(cat).bottom);
-        if (pos > 500 && pos < 580 && catBottom < (obstacle.classList.contains("enemy") ? 120 : 80)) {
+        if (pos > 500 && pos < 580 && catBottom < 80) {
           clearInterval(move);
           obstacle.remove();
           document.querySelectorAll(".obstacle").forEach(ob => ob.remove());
