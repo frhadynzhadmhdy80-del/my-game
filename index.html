@@ -154,7 +154,7 @@
         bullet.style.right = bulletPos + "px";
 
         const catBottom = parseInt(window.getComputedStyle(cat).bottom);
-        if (bulletPos > 520 && bulletPos < 570 && catBottom < 80) {
+        if (bulletPos > 500 && bulletPos < 580 && catBottom < 80) {
           clearInterval(moveBullet);
           bullet.remove();
           alert("با تیر دشمن باختی!");
@@ -194,6 +194,8 @@
         const catBottom = parseInt(window.getComputedStyle(cat).bottom);
         if (pos > 500 && pos < 580 && catBottom < (obstacle.classList.contains("enemy") ? 120 : 80)) {
           clearInterval(move);
+          obstacle.remove();
+          document.querySelectorAll(".obstacle").forEach(ob => ob.remove());
           alert("برخورد با مانع!");
           resetGame();
         }
@@ -231,6 +233,7 @@
       score = 0;
       scoreDisplay.textContent = score;
       speed = 5;
+      document.querySelectorAll(".obstacle").forEach(ob => ob.remove());
     }
   </script>
 </body>
