@@ -156,7 +156,14 @@ function showGameOver() {
 }
 
 function hideAll() {
-  ["menu", "tutorial", "shop", "characterSelect", "game", "scoreboard", "controls", "creator", "gameover"].forEach(id => {
+  const sections = [
+    "menu", "tutorial", "shop", "characterSelect",
+    "game", "scoreboard", "controls", "creator", "gameover"
+  ];
+  sections.forEach(id => {
     document.getElementById(id).style.display = "none";
   });
+
+  clearInterval(gameInterval);
+  document.querySelectorAll(".obstacle").forEach(ob => ob.remove());
 }
