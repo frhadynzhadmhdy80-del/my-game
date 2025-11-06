@@ -2,61 +2,60 @@
 <html lang="fa">
 <head>
   <meta charset="UTF-8">
-  <title>گربه دونده ۳.۳ - ساخته مهدی</title>
+  <title>گربه دونده 3.4</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="header">گربه دونده نسخه ۳.۳ 😺 | طراحی توسط مهدی</div>
-
   <div id="menu">
-    <button class="menu-btn" onclick="showTutorial()">📘 آموزش</button>
-    <button class="menu-btn" onclick="startGame()">🎮 شروع بازی</button>
-    <button class="menu-btn" onclick="showShop()">🛍️ فروشگاه</button>
-    <button class="menu-btn" onclick="showCharacterSelect()">🧍 انتخاب شخصیت</button>
+    <h1>گربه دونده</h1>
+    <p>سکه‌ها: <span id="coins">0</span></p>
+    <button onclick="startGame()">شروع بازی</button>
+    <button onclick="showTutorial()">آموزش</button>
+    <button onclick="showShop()">فروشگاه</button>
   </div>
 
   <div id="tutorial" style="display:none;">
-    <p>👟 با Space یا دکمه «پرش» بپرید</p>
-    <p>🪨 از موانع مثل سنگ و کاکتوس دوری کنید</p>
-    <p>🌙 هر 15 امتیاز حالت شب فعال می‌شه</p>
-    <button class="menu-btn" onclick="backToMenu()">بازگشت</button>
+    <h2>آموزش</h2>
+    <p>با زدن دکمه فاصله (Space) بپر و از موانع عبور کن تا سکه جمع کنی!</p>
+    <button onclick="backToMenu()">بازگشت</button>
   </div>
 
   <div id="shop" style="display:none;">
-    <h3>🛍️ فروشگاه امتیاز</h3>
-    <p>امتیاز فعلی: <span id="shopScore">0</span></p>
-    <button class="menu-btn" onclick="buyBackground()">🎨 خرید پس‌زمینه شب</button>
-    <button class="menu-btn" onclick="backToMenu()">بازگشت</button>
+    <h2>🛒 فروشگاه</h2>
+    <p>سکه‌های شما: <span id="shopCoins">0</span></p>
+
+    <h3>🎨 انتخاب شخصیت</h3>
+    <div id="selectedCharacterPreview" style="width:50px; height:50px; background-size:cover;"></div>
+    <p>شخصیت فعلی: <span id="selectedCharacterName"></span></p>
+    <button onclick="selectCharacter('cat')">گربه</button>
+    <button onclick="selectCharacter('fox')">روباه</button>
+    <button onclick="selectCharacter('rabbit')">خرگوش</button>
+
+    <h3>🌙 خرید پس‌زمینه شب</h3>
+    <button onclick="buyBackground()">خرید با ۱۵ سکه</button>
+
+    <br><br>
+    <button onclick="backToMenu()">بازگشت به منو</button>
   </div>
 
-  <div id="characterSelect" style="display:none;">
-    <h3>🧍 انتخاب شخصیت</h3>
-    <button class="menu-btn" onclick="selectCharacter('cat')">😺 گربه</button>
-    <button class="menu-btn" onclick="selectCharacter('fox')">🦊 روباه</button>
-    <button class="menu-btn" onclick="selectCharacter('rabbit')">🐰 خرگوش</button>
-    <button class="menu-btn" onclick="backToMenu()">بازگشت</button>
+  <div id="game" style="display:none;">
+    <div id="cat"></div>
+    <div id="gameArea"></div>
+    <div id="flash"></div>
+  </div>
+
+  <div id="controls" style="display:none;">
+    <p>برای پرش Space بزن</p>
+  </div>
+
+  <div id="creator" style="display:none;">
+    <p>طراح: مهدی</p>
   </div>
 
   <div id="gameover" style="display:none;">
-    <h2>💥 باختی!</h2>
-    <button class="menu-btn" onclick="startGame()">🔁 شروع مجدد</button>
-    <button class="menu-btn" onclick="backToMenu()">🏠 منوی اصلی</button>
+    <h2>باختی!</h2>
+    <button onclick="backToMenu()">بازگشت به منو</button>
   </div>
-
-  <div id="scoreboard" style="display:none;">
-    امتیاز: <span id="score">0</span> |
-    رکورد: <span id="highscore">0</span>
-  </div>
-  <div id="controls" style="display:none;">
-    <button class="menu-btn" onclick="jump()">پرش</button>
-  </div>
-  <div id="game" style="display:none;">
-    <div id="cat"></div>
-    <div id="ground"></div>
-  </div>
-  <div id="creator" style="display:none;">طراح بازی: مهدی</div>
-  <div id="flash"></div>
-  <audio id="bgMusic" src="background.mp3" autoplay loop></audio>
 
   <script src="game.js"></script>
 </body>
