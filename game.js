@@ -214,3 +214,28 @@ function backToMenu() {
 
 
   };
+
+
+let catPos = 100;
+let moveInterval;
+
+function startGame() {
+  hideAll();
+  isPlaying = true;
+  document.getElementById("game").style.display = "block";
+  document.getElementById("controls").style.display = "block";
+  document.getElementById("creator").style.display = "block";
+
+  cat.style.backgroundImage = `url('${selectedCharacter}-walk.png')`;
+  cat.style.animation = "walk 0.5s steps(3) infinite";
+
+  catPos = 100;
+  cat.style.left = catPos + "px";
+
+  moveInterval = setInterval(() => {
+    catPos += 2;
+    cat.style.left = catPos + "px";
+
+    checkCollision();
+  }, 50);
+}
