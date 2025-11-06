@@ -12,6 +12,7 @@ let isNight = false;
 let isPlaying = false;
 let selectedCharacter = localStorage.getItem("character") || "cat";
 let ownedBackground = localStorage.getItem("bgNight") === "true";
+let ownedCharacters = JSON.parse(localStorage.getItem("ownedCharacters")) || ["cat"];
 
 coinDisplay.textContent = coins;
 
@@ -129,49 +130,13 @@ function showShop() {
 }
 
 function selectCharacter(name) {
+  if (!ownedCharacters.includes(name)) {
+    alert("اول باید این شخصیت رو بخری!");
+    return;
+  }
+
   selectedCharacter = name;
   localStorage.setItem("character", name);
-  alert("شخصیت انتخاب شد: " + name);
-
   document.getElementById("selectedCharacterName").textContent = selectedCharacter;
   document.getElementById("selectedCharacterPreview").style.backgroundImage = `url('${selectedCharacter}.png')`;
-}
-
-function buyBackground() {
-  if (coins >= 15) {
-    ownedBackground = true;
-    localStorage.setItem("bgNight", "true");
-    coins -= 15;
-    localStorage.setItem("coins", coins);
-    coinDisplay.textContent = coins;
-    shopCoinDisplay.textContent = coins;
-    alert("پس‌زمینه شب خریداری شد!");
-  } else {
-    alert("سکه کافی نداری! حداقل ۱۵ سکه لازم است.");
-  }
-}
-
-function backToMenu() {
-  hideAll();
-  document.getElementById("menu").style.display = "block";
-}
-
-function showGameOver() {
-  hideAll();
-  isPlaying = false;
-  document.getElementById("gameover").style.display = "block";
-}
-
-function hideAll() {
-  const sections = [
-    "menu", "tutorial", "shop",
-    "game", "controls", "creator", "gameover"
-  ];
-  sections.forEach(id => {
-    document.getElementById(id).style.display = "none";
-  });
-
-  isPlaying = false;
-  clearInterval(gameInterval);
-  document.querySelectorAll(".obstacle").forEach(ob => ob.remove());
-}
+ 
