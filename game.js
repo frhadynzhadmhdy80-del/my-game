@@ -140,4 +140,20 @@ function selectCharacter(name) {
 
 function buyCharacter(name, cost) {
   if (ownedCharacters.includes(name)) {
-    alert("شخصیت قبلاً خریداری
+    alert("قبلاً این شخصیت رو خریدی!");
+    return;
+  }
+
+  if (coins >= cost) {
+    coins -= cost;
+    ownedCharacters.push(name);
+    localStorage.setItem("ownedCharacters", JSON.stringify(ownedCharacters));
+    localStorage.setItem("coins", coins);
+    coinDisplay.textContent = coins;
+    shopCoinDisplay.textContent = coins;
+    alert("شخصیت " + name + " خریداری شد!");
+  } else {
+    alert("سکه کافی نداری! برای خرید " + name + " باید " + cost + " سکه داشته باشی.");
+  }
+}
+
