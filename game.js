@@ -1,4 +1,31 @@
-// نمایش و مخفی‌سازی بخش‌ها
+// عناصر اصلی
+const cat = document.getElementById("cat");
+const coinDisplay = document.getElementById("coins");
+const shopCoinDisplay = document.getElementById("shopCoins");
+const flash = document.getElementById("flash");
+const gameArea = document.getElementById("gameArea");
+
+// متغیرها
+let coins = parseInt(localStorage.getItem("coins")) || 0;
+let isJumping = false;
+let isPlaying = false;
+let selectedCharacter = localStorage.getItem("character") || "cat";
+let ownedCharacters = JSON.parse(localStorage.getItem("ownedCharacters")) || ["cat"];
+let catPos = 100;
+let moveInterval;
+let obstacleInterval;
+
+// لیست شخصیت‌ها
+const characterList = {
+  cat: { name: "گربه", cost: 0 },
+  fox: { name: "روباه", cost: 10 },
+  rabbit: { name: "خرگوش", cost: 15 },
+  panda: { name: "پاندا", cost: 20 } // بزودی!
+};
+
+coinDisplay.textContent = coins;
+
+// مخفی‌سازی همه‌ی بخش‌ها
 function hideAll() {
   document.getElementById("menu").style.display = "none";
   document.getElementById("tutorial").style.display = "none";
@@ -9,41 +36,21 @@ function hideAll() {
   document.getElementById("gameover").style.display = "none";
 }
 
-// متغیرها
-const cat = document.getElementById("cat");
-const coinDisplay = document.getElementById("coins");
-const shopCoinDisplay = document.getElementById("shopCoins");
-const flash = document.getElementById("flash");
-const gameArea = document.getElementById("gameArea");
-
-let coins = parseInt(localStorage.getItem("coins")) || 0;
-let isJumping = false;
-let isPlaying = false;
-let selectedCharacter = localStorage.getItem("character") || "cat";
-let ownedCharacters = JSON.parse(localStorage.getItem("ownedCharacters")) || ["cat"];
-let catPos = 100;
-let moveInterval;
-let obstacleInterval;
-
-coinDisplay.textContent = coins;
-
-// پرش
-function jump() {
-  if (!isJumping) {
-    isJumping = true;
-    cat.style.bottom = "120px";
-    setTimeout(() => {
-      cat.style.bottom = "40px";
-      isJumping = false;
-    }, 600);
-  }
-}
-
+// پرش با Space
 document.addEventListener("keydown", function(e) {
   if (e.code === "Space" && !isJumping && isPlaying) {
     jump();
   }
 });
+
+function jump() {
+  isJumping = true;
+  cat.style.bottom = "120px";
+  setTimeout(() => {
+    cat.style.bottom = "40px";
+    isJumping = false;
+  }, 600);
+}
 
 // افکت باخت
 function flashScreen() {
@@ -118,6 +125,20 @@ function showShop() {
 
   document.getElementById("selectedCharacterName").textContent = selectedCharacter;
   document.getElementById("selectedCharacterPreview").style.backgroundImage = `url('${selectedCharacter}-walk.png')`;
+
+  const shopContainer = document.getElementById("shopCharacters");
+  shopContainer.innerHTML = "";
+
+  for (let key in characterList) {
+    const char = characterList[key];
+    const div = document.createElement("div");
+    div.innerHTML = `
+      <p>${char.name} (${char.cost} سکه)</p>
+      <button onclick="buyCharacter('${key}', ${char.cost})">خرید</button>
+      <button onclick="selectCharacter('${key}')">انتخاب</button>
+    `;
+    shopContainer.appendChild(div);
+  }
 }
 
 // انتخاب شخصیت
