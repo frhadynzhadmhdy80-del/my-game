@@ -1,3 +1,12 @@
+function hideAll() {
+  document.getElementById("menu").style.display = "none";
+  document.getElementById("tutorial").style.display = "none";
+  document.getElementById("shop").style.display = "none";
+  document.getElementById("game").style.display = "none";
+  document.getElementById("controls").style.display = "none";
+  document.getElementById("creator").style.display = "none";
+  document.getElementById("gameover").style.display = "none";
+}
 const cat = document.getElementById("cat");
 const coinDisplay = document.getElementById("coins");
 const shopCoinDisplay = document.getElementById("shopCoins");
@@ -156,4 +165,5 @@ function buyCharacter(name, cost) {
     alert("سکه کافی نداری! برای خرید " + name + " باید " + cost + " سکه داشته باشی.");
   }
 }
+
 
