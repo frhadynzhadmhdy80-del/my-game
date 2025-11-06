@@ -11,6 +11,7 @@ let isJumping = false;
 let gameInterval;
 let speed = 5;
 let isNight = false;
+let isPlaying = false;
 let selectedCharacter = localStorage.getItem("character") || "cat";
 let ownedBackground = localStorage.getItem("bgNight") === "true";
 
@@ -28,7 +29,7 @@ function jump() {
 }
 
 document.addEventListener("keydown", function(e) {
-  if (e.code === "Space" && !isJumping) {
+  if (e.code === "Space" && !isJumping && isPlaying) {
     jump();
   }
 });
@@ -43,6 +44,8 @@ function flashScreen() {
 }
 
 function createObstacle() {
+  if (!isPlaying) return;
+
   const obstacle = document.createElement("div");
   obstacle.classList.add("obstacle");
 
@@ -55,6 +58,12 @@ function createObstacle() {
   let pos = -30;
   let passed = false;
   const move = setInterval(() => {
+    if (!isPlaying) {
+      clearInterval(move);
+      obstacle.remove();
+      return;
+    }
+
     pos += speed;
     obstacle.style.right = pos + "px";
 
@@ -98,6 +107,7 @@ function createObstacle() {
 
 function startGame() {
   hideAll();
+  isPlaying = true;
   document.getElementById("game").style.display = "block";
   document.getElementById("scoreboard").style.display = "block";
   document.getElementById("controls").style.display = "block";
@@ -152,6 +162,7 @@ function backToMenu() {
 
 function showGameOver() {
   hideAll();
+  isPlaying = false;
   document.getElementById("gameover").style.display = "block";
 }
 
@@ -164,6 +175,7 @@ function hideAll() {
     document.getElementById(id).style.display = "none";
   });
 
+  isPlaying = false;
   clearInterval(gameInterval);
   document.querySelectorAll(".obstacle").forEach(ob => ob.remove());
 }
