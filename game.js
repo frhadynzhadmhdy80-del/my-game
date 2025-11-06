@@ -1,3 +1,4 @@
+// نمایش و مخفی‌سازی بخش‌ها
 function hideAll() {
   document.getElementById("menu").style.display = "none";
   document.getElementById("tutorial").style.display = "none";
@@ -7,6 +8,8 @@ function hideAll() {
   document.getElementById("creator").style.display = "none";
   document.getElementById("gameover").style.display = "none";
 }
+
+// متغیرها
 const cat = document.getElementById("cat");
 const coinDisplay = document.getElementById("coins");
 const shopCoinDisplay = document.getElementById("shopCoins");
@@ -24,6 +27,7 @@ let ownedCharacters = JSON.parse(localStorage.getItem("ownedCharacters")) || ["c
 
 coinDisplay.textContent = coins;
 
+// پرش
 function jump() {
   if (!isJumping) {
     isJumping = true;
@@ -41,6 +45,7 @@ document.addEventListener("keydown", function(e) {
   }
 });
 
+// افکت باخت
 function flashScreen() {
   flash.style.display = "block";
   document.body.style.animation = "shake 0.3s";
@@ -50,6 +55,7 @@ function flashScreen() {
   }, 300);
 }
 
+// موانع
 function createObstacle() {
   if (!isPlaying) return;
 
@@ -104,6 +110,7 @@ function createObstacle() {
   }, 20);
 }
 
+// شروع بازی
 function startGame() {
   hideAll();
   isPlaying = true;
@@ -120,11 +127,13 @@ function startGame() {
   gameInterval = setInterval(createObstacle, 2000);
 }
 
+// آموزش
 function showTutorial() {
   hideAll();
   document.getElementById("tutorial").style.display = "block";
 }
 
+// فروشگاه
 function showShop() {
   hideAll();
   document.getElementById("shop").style.display = "block";
@@ -134,6 +143,7 @@ function showShop() {
   document.getElementById("selectedCharacterPreview").style.backgroundImage = `url('${selectedCharacter}.png')`;
 }
 
+// انتخاب شخصیت
 function selectCharacter(name) {
   if (!ownedCharacters.includes(name)) {
     alert("اول باید این شخصیت رو بخری!");
@@ -147,6 +157,7 @@ function selectCharacter(name) {
   alert("شخصیت انتخاب شد: " + name);
 }
 
+// خرید شخصیت
 function buyCharacter(name, cost) {
   if (ownedCharacters.includes(name)) {
     alert("قبلاً این شخصیت رو خریدی!");
@@ -166,4 +177,36 @@ function buyCharacter(name, cost) {
   }
 }
 
+// خرید پس‌زمینه شب
+function buyBackground() {
+  if (ownedBackground) {
+    alert("قبلاً خریدی!");
+    return;
+  }
 
+  if (coins >= 15) {
+    coins -= 15;
+    ownedBackground = true;
+    localStorage.setItem("bgNight", "true");
+    localStorage.setItem("coins", coins);
+    coinDisplay.textContent = coins;
+    shopCoinDisplay.textContent = coins;
+    alert("پس‌زمینه شب خریداری شد!");
+  } else {
+    alert("سکه کافی نداری!");
+  }
+}
+
+// باخت
+function showGameOver() {
+  isPlaying = false;
+  clearInterval(gameInterval);
+  document.getElementById("gameover").style.display = "block";
+}
+
+// برگشت به منو
+function backToMenu() {
+  hideAll();
+  document.getElementById("menu").style.display = "block";
+  coinDisplay.textContent = coins;
+}
