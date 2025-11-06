@@ -24,12 +24,14 @@
     <h2>🛒 فروشگاه</h2>
     <p>سکه‌های شما: <span id="shopCoins">0</span></p>
 
-    <h3>🎨 انتخاب شخصیت</h3>
+    <h3>🎨 شخصیت‌ها</h3>
     <div id="selectedCharacterPreview" style="width:50px; height:50px; background-size:cover;"></div>
     <p>شخصیت فعلی: <span id="selectedCharacterName"></span></p>
-    <button onclick="selectCharacter('cat')">گربه</button>
-    <button onclick="selectCharacter('fox')">روباه</button>
-    <button onclick="selectCharacter('rabbit')">خرگوش</button>
+    <button onclick="selectCharacter('cat')">انتخاب گربه (رایگان)</button>
+    <button onclick="buyCharacter('fox', 20)">خرید روباه (۲۰ سکه)</button>
+    <button onclick="selectCharacter('fox')">انتخاب روباه</button>
+    <button onclick="buyCharacter('rabbit', 30)">خرید خرگوش (۳۰ سکه)</button>
+    <button onclick="selectCharacter('rabbit')">انتخاب خرگوش</button>
 
     <h3>🌙 خرید پس‌زمینه شب</h3>
     <button onclick="buyBackground()">خرید با ۱۵ سکه</button>
@@ -45,7 +47,7 @@
   </div>
 
   <div id="controls" style="display:none;">
-    <p>برای پرش Space بزن</p>
+    <p>بزن Space برای پرش</p>
   </div>
 
   <div id="creator" style="display:none;">
