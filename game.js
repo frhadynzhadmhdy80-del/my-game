@@ -1,7 +1,6 @@
 const cat = document.getElementById("cat");
 const coinDisplay = document.getElementById("coins");
 const shopCoinDisplay = document.getElementById("shopCoins");
-const gameArea = document.getElementById("game");
 const flash = document.getElementById("flash");
 
 let coins = parseInt(localStorage.getItem("coins")) || 0;
@@ -47,12 +46,9 @@ function createObstacle() {
 
   const obstacle = document.createElement("div");
   obstacle.classList.add("obstacle");
-
-  const type = Math.random();
-  obstacle.classList.add(type < 0.5 ? "cactus" : "rock");
-
+  obstacle.classList.add(Math.random() < 0.5 ? "cactus" : "rock");
   obstacle.style.right = "-30px";
-  gameArea.appendChild(obstacle);
+  document.getElementById("gameArea").appendChild(obstacle);
 
   let pos = -30;
   let passed = false;
@@ -139,4 +135,9 @@ function selectCharacter(name) {
   localStorage.setItem("character", name);
   document.getElementById("selectedCharacterName").textContent = selectedCharacter;
   document.getElementById("selectedCharacterPreview").style.backgroundImage = `url('${selectedCharacter}.png')`;
- 
+  alert("شخصیت انتخاب شد: " + name);
+}
+
+function buyCharacter(name, cost) {
+  if (ownedCharacters.includes(name)) {
+    alert("شخصیت قبلاً خریداری
