@@ -1,3 +1,4 @@
+window.onload = function() {
 // نمایش و مخفی‌سازی بخش‌ها
 function hideAll() {
   document.getElementById("menu").style.display = "none";
@@ -210,3 +211,6 @@ function backToMenu() {
   document.getElementById("menu").style.display = "block";
   coinDisplay.textContent = coins;
 }
+
+
+  };
