@@ -1,12 +1,10 @@
 const cat = document.getElementById("cat");
-const scoreDisplay = document.getElementById("score");
-const highscoreDisplay = document.getElementById("highscore");
-const shopScoreDisplay = document.getElementById("shopScore");
+const coinDisplay = document.getElementById("coins");
+const shopCoinDisplay = document.getElementById("shopCoins");
 const gameArea = document.getElementById("game");
 const flash = document.getElementById("flash");
 
-let score = 0;
-let highscore = localStorage.getItem("highscore") || 0;
+let coins = parseInt(localStorage.getItem("coins")) || 0;
 let isJumping = false;
 let gameInterval;
 let speed = 5;
@@ -15,7 +13,7 @@ let isPlaying = false;
 let selectedCharacter = localStorage.getItem("character") || "cat";
 let ownedBackground = localStorage.getItem("bgNight") === "true";
 
-highscoreDisplay.textContent = highscore;
+coinDisplay.textContent = coins;
 
 function jump() {
   if (!isJumping) {
@@ -78,24 +76,19 @@ function createObstacle() {
 
     if (!passed && pos > 580) {
       passed = true;
-      if (catBottom >= 80) score++;
+      if (catBottom >= 80) coins++;
     }
 
     if (pos > 600) {
       clearInterval(move);
       obstacle.remove();
-      score++;
-      scoreDisplay.textContent = score;
-      shopScoreDisplay.textContent = score;
+      coins++;
+      coinDisplay.textContent = coins;
+      shopCoinDisplay.textContent = coins;
+      localStorage.setItem("coins", coins);
 
-      if (score > highscore) {
-        highscore = score;
-        localStorage.setItem("highscore", highscore);
-        highscoreDisplay.textContent = highscore;
-      }
-
-      if (score % 10 === 0 && speed < 15) speed += 0.5;
-      if (score % 15 === 0 && ownedBackground) {
+      if (coins % 10 === 0 && speed < 15) speed += 0.5;
+      if (coins % 15 === 0 && ownedBackground) {
         document.body.style.background = isNight
           ? "linear-gradient(to bottom, #cceeff, #ffffff)"
           : "linear-gradient(to bottom, #0d1b2a, #1b263b)";
@@ -109,17 +102,15 @@ function startGame() {
   hideAll();
   isPlaying = true;
   document.getElementById("game").style.display = "block";
-  document.getElementById("scoreboard").style.display = "block";
   document.getElementById("controls").style.display = "block";
   document.getElementById("creator").style.display = "block";
 
   cat.style.backgroundImage = `url('${selectedCharacter}.png')`;
 
   clearInterval(gameInterval);
-  score = 0;
   speed = 5;
-  scoreDisplay.textContent = score;
-  shopScoreDisplay.textContent = score;
+  coinDisplay.textContent = coins;
+  shopCoinDisplay.textContent = coins;
   gameInterval = setInterval(createObstacle, 2000);
 }
 
@@ -131,27 +122,32 @@ function showTutorial() {
 function showShop() {
   hideAll();
   document.getElementById("shop").style.display = "block";
-  shopScoreDisplay.textContent = score;
-}
+  shopCoinDisplay.textContent = coins;
 
-function showCharacterSelect() {
-  hideAll();
-  document.getElementById("characterSelect").style.display = "block";
+  document.getElementById("selectedCharacterName").textContent = selectedCharacter;
+  document.getElementById("selectedCharacterPreview").style.backgroundImage = `url('${selectedCharacter}.png')`;
 }
 
 function selectCharacter(name) {
   selectedCharacter = name;
   localStorage.setItem("character", name);
   alert("شخصیت انتخاب شد: " + name);
+
+  document.getElementById("selectedCharacterName").textContent = selectedCharacter;
+  document.getElementById("selectedCharacterPreview").style.backgroundImage = `url('${selectedCharacter}.png')`;
 }
 
 function buyBackground() {
-  if (score >= 15) {
+  if (coins >= 15) {
     ownedBackground = true;
     localStorage.setItem("bgNight", "true");
+    coins -= 15;
+    localStorage.setItem("coins", coins);
+    coinDisplay.textContent = coins;
+    shopCoinDisplay.textContent = coins;
     alert("پس‌زمینه شب خریداری شد!");
   } else {
-    alert("امتیاز کافی نداری! حداقل ۱۵ امتیاز لازم است.");
+    alert("سکه کافی نداری! حداقل ۱۵ سکه لازم است.");
   }
 }
 
@@ -168,8 +164,8 @@ function showGameOver() {
 
 function hideAll() {
   const sections = [
-    "menu", "tutorial", "shop", "characterSelect",
-    "game", "scoreboard", "controls", "creator", "gameover"
+    "menu", "tutorial", "shop",
+    "game", "controls", "creator", "gameover"
   ];
   sections.forEach(id => {
     document.getElementById(id).style.display = "none";
