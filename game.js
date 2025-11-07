@@ -67,7 +67,7 @@ function startGame() {
   cat.style.left = catPos + "px";
 
   moveInterval = setInterval(() => {
-    catPos += 4; // سرعت بیشتر
+    catPos += 4;
     cat.style.left = catPos + "px";
     checkCollision();
   }, 50);
@@ -122,4 +122,13 @@ function showShop() {
     const char = characterList[key];
     const div = document.createElement("div");
     div.innerHTML = `
-      <p>${char.name} (${char.cost
+      <p>${char.name} (${char.cost} سکه)</p>
+      <button onclick="buyCharacter('${key}', ${char.cost})">خرید</button>
+      <button onclick="selectCharacter('${key}')">انتخاب</button>
+    `;
+    shopContainer.appendChild(div);
+  }
+}
+
+function selectCharacter(name) {
+  if (!ownedCharacters.includes(name))
