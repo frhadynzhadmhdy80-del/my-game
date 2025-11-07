@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <title>Cat Runner</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:,">
 </head>
 <body>
-  <!-- منو -->
   <div id="menu">
     <h1>برای پرش Space بزن</h1>
     <p>طراح: مهدی</p>
@@ -15,14 +15,12 @@
     <button onclick="showShop()">فروشگاه</button>
   </div>
 
-  <!-- آموزش -->
   <div id="tutorial" style="display:none;">
     <h2>آموزش بازی</h2>
     <p>با Space بپرید و از موانع عبور کنید.</p>
     <button onclick="backToMenu()">بازگشت</button>
   </div>
 
-  <!-- فروشگاه -->
   <div id="shop" style="display:none;">
     <h2>فروشگاه</h2>
     <p>سکه‌ها: <span id="shopCoins">0</span></p>
@@ -34,7 +32,6 @@
     <button onclick="backToMenu()">بازگشت</button>
   </div>
 
-  <!-- بازی -->
   <div id="game" style="display:none;">
     <div id="gameArea">
       <div id="cat"></div>
@@ -42,23 +39,19 @@
     <div id="flash"></div>
   </div>
 
-  <!-- کنترل‌ها -->
   <div id="controls" style="display:none;">
     <p>سکه‌ها: <span id="coins">0</span></p>
   </div>
 
-  <!-- طراح -->
   <div id="creator" style="display:none;">
     <p>طراح: مهدی</p>
   </div>
 
-  <!-- باخت -->
   <div id="gameover" style="display:none;">
     <h2>باختی!</h2>
     <button onclick="backToMenu()">بازگشت به منو</button>
   </div>
 
-  <!-- اسکریپت -->
   <script src="game.js"></script>
 </body>
 </html>
