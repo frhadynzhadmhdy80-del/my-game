@@ -132,3 +132,19 @@ function showShop() {
 
 function selectCharacter(name) {
   if (!ownedCharacters.includes(name))
+
+
+ function startGame() {
+  console.log("بازی شروع شد");
+  // کد شروع بازی
+}
+
+function showTutorial() {
+  console.log("نمایش آموزش");
+  // کد نمایش آموزش
+}
+
+function showShop() {
+  console.log("نمایش فروشگاه");
+  // کد نمایش فروشگاه
+} 
