@@ -1,5 +1,4 @@
-function showGameOver();
-{
+function showGameOver(){
   isPlaying = false;
   document.getElementById("controls").style.display = "none";
   document.getElementById("creator").style.display = "none";
@@ -38,4 +37,5 @@ function startGame() {
 
   obstacleInterval = setInterval(createObstacle, 2000);
 }
+
 
