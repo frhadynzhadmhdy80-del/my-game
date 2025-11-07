@@ -131,20 +131,12 @@ function showShop() {
 }
 
 function selectCharacter(name) {
-  if (!ownedCharacters.includes(name))
+  if (!ownedCharacters.includes(name)) {
+    alert("اول باید این شخصیت رو بخری!");
+    return;
+  }
 
-
- function startGame() {
-  console.log("بازی شروع شد");
-  // کد شروع بازی
-}
-
-function showTutorial() {
-  console.log("نمایش آموزش");
-  // کد نمایش آموزش
-}
-
-function showShop() {
-  console.log("نمایش فروشگاه");
-  // کد نمایش فروشگاه
-} 
+  selectedCharacter = name;
+  localStorage.setItem("character", name);
+  document.getElementById("selectedCharacterName").textContent = selectedCharacter;
+  document.getElementById("selectedCharacterPreview").style.backgroundImage
