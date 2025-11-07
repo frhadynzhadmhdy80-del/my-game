@@ -12,6 +12,7 @@ let ownedCharacters = JSON.parse(localStorage.getItem("ownedCharacters")) || ["c
 let moveInterval;
 let obstacleInterval;
 let spacePressed = false;
+let bgPos = 0;
 
 const characterList = {
   cat: { name: "گربه", cost: 0 },
@@ -71,12 +72,16 @@ function startGame() {
   cat.style.backgroundImage = `url('${selectedCharacter}-walk.png')`;
   cat.style.animation = "walk 0.5s steps(3) infinite";
 
+  bgPos = 0;
   moveInterval = setInterval(() => {
+    bgPos -= 2;
+    gameArea.style.backgroundPosition = `${bgPos}px 0`;
+
     document.querySelectorAll(".obstacle").forEach(obstacle => {
       let left = parseInt(obstacle.style.left);
       obstacle.style.left = (left - 4) + "px";
 
-      if (left < 0) {
+      if (left < -50) {
         obstacle.remove();
         coins++;
         coinDisplay.textContent = coins;
@@ -106,29 +111,4 @@ function checkCollision() {
     const obsRect = obstacle.getBoundingClientRect();
 
     const overlapX = obsRect.left < catRect.right && obsRect.right > catRect.left;
-    const overlapY = obsRect.bottom > catRect.top && obsRect.top < catRect.bottom;
-
-    if (overlapX && overlapY) {
-      clearInterval(moveInterval);
-      clearInterval(obstacleInterval);
-      flashScreen();
-      showGameOver();
-    }
-  });
-}
-
-function showTutorial() {
-  hideAll();
-  document.getElementById("tutorial").style.display = "block";
-}
-
-function showShop() {
-  hideAll();
-  document.getElementById("shop").style.display = "block";
-  shopCoinDisplay.textContent = coins;
-
-  document.getElementById("selectedCharacterName").textContent = selectedCharacter;
-  document.getElementById("selectedCharacterPreview").style.backgroundImage = `url('${selectedCharacter}-walk.png')`;
-
-  const shopContainer = document.getElementById("shopCharacters");
-  shopContainer
+    const overlapY = obsRect.bottom > catRect
