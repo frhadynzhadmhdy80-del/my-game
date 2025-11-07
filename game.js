@@ -112,7 +112,6 @@ function checkCollision() {
 
     const overlapX = obsRect.left < catRect.right && obsRect.right > catRect.left;
     const overlapY = obsRect.bottom > catRect.top && obsRect.top < catRect.bottom;
-
     if (overlapX && overlapY) {
       clearInterval(moveInterval);
       clearInterval(obstacleInterval);
@@ -194,3 +193,4 @@ function backToMenu() {
   document.getElementById("menu").style.display = "block";
   coinDisplay.textContent = coins;
 }
+
