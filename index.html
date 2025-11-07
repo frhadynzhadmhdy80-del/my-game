@@ -7,7 +7,7 @@
   <link rel="icon" href="data:,">
 </head>
 <body>
-  <div id="menu">
+  <div id="menu" class="centered">
     <h1>برای پرش Space بزن</h1>
     <p>طراح: مهدی</p>
     <button onclick="startGame()">شروع بازی</button>
@@ -15,13 +15,13 @@
     <button onclick="showShop()">فروشگاه</button>
   </div>
 
-  <div id="tutorial" style="display:none;">
+  <div id="tutorial" class="centered" style="display:none;">
     <h2>آموزش بازی</h2>
     <p>با Space بپرید و از موانع عبور کنید.</p>
     <button onclick="backToMenu()">بازگشت</button>
   </div>
 
-  <div id="shop" style="display:none;">
+  <div id="shop" class="centered" style="display:none;">
     <h2>فروشگاه</h2>
     <p>سکه‌ها: <span id="shopCoins">0</span></p>
     <div>
@@ -47,7 +47,7 @@
     <p>طراح: مهدی</p>
   </div>
 
-  <div id="gameover" style="display:none;">
+  <div id="gameover" class="centered" style="display:none;">
     <h2>باختی!</h2>
     <button onclick="backToMenu()">بازگشت به منو</button>
   </div>
@@ -55,16 +55,3 @@
   <script src="game.js"></script>
 </body>
 </html>
-
-
-<div id="menu" class="centered">
-  <h1>برای پرش Space بزن</h1>
-  <p>طراح: مهدی</p>
-  <button onclick="startGame()">شروع بازی</button>
-  <button onclick="showTutorial()">آموزش</button>
-  <button onclick="showShop()">فروشگاه</button>
-</div>
-
-<div id="tutorial" class="centered" style="display:none;">...</div>
-<div id="shop" class="centered" style="display:none;">...</div>
-<div id="gameover" class="centered" style="display:none;">...</div>
