@@ -1,9 +1,11 @@
+// عناصر اصلی
 const cat = document.getElementById("cat");
 const coinDisplay = document.getElementById("coins");
 const shopCoinDisplay = document.getElementById("shopCoins");
 const flash = document.getElementById("flash");
 const gameArea = document.getElementById("gameArea");
 
+// متغیرها
 let coins = parseInt(localStorage.getItem("coins")) || 0;
 let isJumping = false;
 let isPlaying = false;
@@ -139,4 +141,36 @@ function selectCharacter(name) {
   selectedCharacter = name;
   localStorage.setItem("character", name);
   document.getElementById("selectedCharacterName").textContent = selectedCharacter;
-  document.getElementById("selectedCharacterPreview").style.backgroundImage
+  document.getElementById("selectedCharacterPreview").style.backgroundImage = `url('${selectedCharacter}-walk.png')`;
+  alert("شخصیت انتخاب شد: " + name);
+}
+
+function buyCharacter(name, cost) {
+  if (ownedCharacters.includes(name)) {
+    alert("قبلاً خریدی!");
+    return;
+  }
+
+  if (coins >= cost) {
+    coins -= cost;
+    ownedCharacters.push(name);
+    localStorage.setItem("ownedCharacters", JSON.stringify(ownedCharacters));
+    localStorage.setItem("coins", coins);
+    coinDisplay.textContent = coins;
+    shopCoinDisplay.textContent = coins;
+    alert("شخصیت خریداری شد!");
+  } else {
+    alert("سکه کافی نداری!");
+  }
+}
+
+function showGameOver() {
+  isPlaying = false;
+  document.getElementById("gameover").style.display = "block";
+}
+
+function backToMenu() {
+  hideAll();
+  document.getElementById("menu").style.display = "block";
+  coinDisplay.textContent = coins;
+}
