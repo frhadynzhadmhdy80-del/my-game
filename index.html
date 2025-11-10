@@ -2,57 +2,21 @@
 <html lang="fa">
 <head>
   <meta charset="UTF-8">
-  <title>Cat Runner</title>
+  <title>Cat Runner ساده</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:,">
 </head>
 <body>
-  <div id="menu" class="centered">
-    <h1>برای پرش Space بزن</h1>
-    <p>طراح: مهدی</p>
-    <button onclick="startGame()">شروع بازی</button>
-    <button onclick="showTutorial()">آموزش</button>
-    <button onclick="showShop()">فروشگاه</button>
+  <div id="gameArea">
+    <div id="cat"></div>
   </div>
-
-  <div id="tutorial" class="centered" style="display:none;">
-    <h2>آموزش بازی</h2>
-    <p>با Space بپرید و از موانع عبور کنید.</p>
-    <button onclick="backToMenu()">بازگشت</button>
-  </div>
-
-  <div id="shop" class="centered" style="display:none;">
-    <h2>فروشگاه</h2>
-    <p>سکه‌ها: <span id="shopCoins">0</span></p>
-    <div>
-      <p>شخصیت انتخاب‌شده: <span id="selectedCharacterName"></span></p>
-      <div id="selectedCharacterPreview" class="preview"></div>
-    </div>
-    <div id="shopCharacters"></div>
-    <button onclick="backToMenu()">بازگشت</button>
-  </div>
-
-  <div id="game" style="display:none;">
-    <div id="gameArea">
-      <div id="cat"></div>
-    </div>
-    <div id="flash"></div>
-  </div>
-
-  <div id="controls" style="display:none;">
+  <div id="info">
     <p>سکه‌ها: <span id="coins">0</span></p>
+    <p>برای پرش Space بزن</p>
   </div>
-
-  <div id="creator" style="display:none;">
-    <p>طراح: مهدی</p>
-  </div>
-
-  <div id="gameover" class="centered" style="display:none;">
+  <div id="gameover" style="display:none;">
     <h2>باختی!</h2>
     <button onclick="startGame()">شروع مجدد</button>
-    <button onclick="backToMenu()">بازگشت به منو</button>
   </div>
-
   <script src="game.js"></script>
 </body>
 </html>
