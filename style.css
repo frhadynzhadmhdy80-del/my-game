@@ -1,34 +1,17 @@
 body {
-  font-family: Tahoma, sans-serif;
-  background-color: #cceeff;
   margin: 0;
   padding: 0;
+  font-family: Tahoma;
+  background-color: #cceeff;
   overflow: hidden;
-}
-
-button {
-  margin: 5px;
-  padding: 10px 20px;
-  font-size: 16px;
-}
-
-.centered {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
 }
 
 #gameArea {
   position: relative;
   width: 100%;
   height: 300px;
-  background-image: url('background.png');
-  background-repeat: repeat-x;
-  background-position: 0 0;
+  background: url('background.png') repeat-x;
   background-size: cover;
-  overflow: hidden;
 }
 
 #cat {
@@ -37,7 +20,7 @@ button {
   position: absolute;
   bottom: 40px;
   left: 100px;
-  background-image: url('cat-walk.png');
+  background: url('cat-walk.png');
   background-size: 150px 50px;
   animation: walk 0.5s steps(3) infinite;
 }
@@ -52,29 +35,17 @@ button {
   height: 30px;
   position: absolute;
   bottom: 40px;
-}
-
-.cactus {
   background-color: green;
 }
 
-.rock {
-  background-color: gray;
-}
-
-#flash {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+#info {
+  padding: 10px;
   background: white;
-  opacity: 0.8;
-  display: none;
+  text-align: center;
 }
 
-.preview {
-  width: 50px;
-  height: 50px;
-  background-size: cover;
+#gameover {
+  text-align: center;
+  padding: 20px;
+  background: white;
 }
